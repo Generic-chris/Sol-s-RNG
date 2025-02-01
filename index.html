@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sol's RNG</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            transition: background-color 0.5s ease;
+        }
+        #result, #highest {
+            font-size: 2em;
+            margin-top: 20px;
+            transition: all 0.5s ease;
+        }
+        .common { color: gray; }
+        .uncommon { color: green; text-shadow: 0 0 10px green; }
+        .rare { color: blue; text-shadow: 0 0 10px blue; }
+        .epic { color: purple; text-shadow: 0 0 15px purple; transform: scale(1.2); }
+        .legendary { color: gold; text-shadow: 0 0 20px gold; animation: glow 1s infinite alternate; }
+        .mythic { color: red; text-shadow: 0 0 25px red; animation: glow 1s infinite alternate; transform: scale(1.3); }
+        .superEpic { color: orange; text-shadow: 0 0 30px orange; animation: glow 1s infinite alternate; transform: scale(1.4); }
+        .ultraMythic { color: cyan; text-shadow: 0 0 35px cyan; animation: glow 1s infinite alternate; transform: scale(1.5); }
+        .cosmic { color: violet; text-shadow: 0 0 40px violet; animation: glow 1s infinite alternate; transform: scale(1.6); }
+        .divine { color: white; text-shadow: 0 0 50px white; animation: glow 1s infinite alternate; transform: scale(1.7); }
+        .eternal { color: yellow; text-shadow: 0 0 60px yellow; animation: glow 1s infinite alternate; transform: scale(1.8); }
+        .transcendent { color: pink; text-shadow: 0 0 70px pink; animation: glow 1s infinite alternate; transform: scale(1.9); }
+        .celestial { color: lightblue; text-shadow: 0 0 80px lightblue; animation: glow 1s infinite alternate; transform: scale(2); }
+        .apocalyptic { color: crimson; text-shadow: 0 0 90px crimson; animation: glow 1s infinite alternate; transform: scale(2.1); }
+        .omniscient { color: emerald; text-shadow: 0 0 100px emerald; animation: glow 1s infinite alternate; transform: scale(2.2); }
+        .infinity { color: silver; text-shadow: 0 0 110px silver; animation: glow 1s infinite alternate; transform: scale(2.3); }
+        .universal { color: gold; text-shadow: 0 0 120px gold; animation: glow 1s infinite alternate; transform: scale(2.4); }
+        .godlike { color: rainbow; text-shadow: 0 0 130px rainbow; animation: glow 1s infinite alternate; transform: scale(2.5); }
+        .celestialOmega { color: darkgoldenrod; text-shadow: 0 0 140px darkgoldenrod; animation: glow 1s infinite alternate; transform: scale(2.6); }
+        /* Add New Rarities */
+        .ultimate { color: teal; text-shadow: 0 0 150px teal; animation: glow 1s infinite alternate; transform: scale(2.7); }
+        .galactic { color: darkblue; text-shadow: 0 0 160px darkblue; animation: glow 1s infinite alternate; transform: scale(2.8); }
+        .fate { color: pink; text-shadow: 0 0 170px pink; animation: glow 1s infinite alternate; transform: scale(2.9); }
+        .chronos { color: lightpink; text-shadow: 0 0 180px lightpink; animation: glow 1s infinite alternate; transform: scale(3); }
+        .spectral { color: white; text-shadow: 0 0 190px white; animation: glow 1s infinite alternate; transform: scale(3.1); }
+        .arcane { color: purple; text-shadow: 0 0 200px purple; animation: glow 1s infinite alternate; transform: scale(3.2); }
+        .immortal { color: gold; text-shadow: 0 0 210px gold; animation: glow 1s infinite alternate; transform: scale(3.3); }
+        .infiniteChaos { color: crimson; text-shadow: 0 0 220px crimson; animation: glow 1s infinite alternate; transform: scale(3.4); }
+        .shadowborn { color: black; text-shadow: 0 0 230px black; animation: glow 1s infinite alternate; transform: scale(3.5); }
+        .otherworldly { color: deepviolet; text-shadow: 0 0 240px deepviolet; animation: glow 1s infinite alternate; transform: scale(3.6); }
+        .overworldly { color: greenyellow; text-shadow: 0 0 250px greenyellow; animation: glow 1s infinite alternate; transform: scale(3.7); }
+        .transcendence { color: deepblue; text-shadow: 0 0 260px deepblue; animation: glow 1s infinite alternate; transform: scale(3.8); }
+        .echo { color: lightcyan; text-shadow: 0 0 270px lightcyan; animation: glow 1s infinite alternate; transform: scale(3.9); }
+        .seraphic { color: yellowgreen; text-shadow: 0 0 280px yellowgreen; animation: glow 1s infinite alternate; transform: scale(4); }
+        .prime { color: darkorchid; text-shadow: 0 0 290px darkorchid; animation: glow 1s infinite alternate; transform: scale(4.1); }
+        .universalOmega { color: indigo; text-shadow: 0 0 300px indigo; animation: glow 1s infinite alternate; transform: scale(4.2); }
+        .endgame { color: darkslateblue; text-shadow: 0 0 310px darkslateblue; animation: glow 1s infinite alternate; transform: scale(4.3); }
+        .realityBender { color: lightgreen; text-shadow: 0 0 320px lightgreen; animation: glow 1s infinite alternate; transform: scale(4.4); }
+        .immensity { color: limegreen; text-shadow: 0 0 330px limegreen; animation: glow 1s infinite alternate; transform: scale(4.5); }
+        .nebulous { color: teal; text-shadow: 0 0 340px teal; animation: glow 1s infinite alternate; transform: scale(4.6); }
+        .cosmicEclipse { color: royalblue; text-shadow: 0 0 350px royalblue; animation: glow 1s infinite alternate; transform: scale(4.7); }
+        .solstice { color: goldenrod; text-shadow: 0 0 360px goldenrod; animation: glow 1s infinite alternate; transform: scale(4.8); }
+        .fury { color: crimson; text-shadow: 0 0 370px crimson; animation: glow 1s infinite alternate; transform: scale(4.9); }
+        .ascendant { color: olive; text-shadow: 0 0 380px olive; animation: glow 1s infinite alternate; transform: scale(5); }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px gold; }
+            to { text-shadow: 0 0 40px gold; }
+        }
+        /* Spinning Loader */
+        .spinner {
+            border: 4px solid transparent;
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-top: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Sol's RNG</h1>
+    <button onclick="rollRNG()">Roll</button>
+    <button onclick="toggleAutoRoll()">Auto Roll</button>
+    <div id="result">Press Roll!</div>
+    <div id="highest">Highest Roll: None</div>
+    <div id="spinner" class="spinner" style="display: none;"></div>
+
+    <script>
+        let highestRoll = getCookie("highestRoll") || "None"; // Get the highest rarity from the cookie
+        let highestRollChance = getCookie("highestRollChance") || "";
+        let autoRollInterval = null;
+
+        // Display the highest roll from cookies on page load
+        document.getElementById("highest").textContent = `Highest Roll: ${highestRoll} (${highestRollChance})`;
+
+        function rollRNG() {
+            // Show the "Rolling..." animation
+            const spinner = document.getElementById("spinner");
+            const resultDiv = document.getElementById("result");
+            spinner.style.display = "block"; // Show the spinner
+            resultDiv.textContent = "Rolling..."; // Change text to show it's rolling
+
+            // Simulate a small delay for the roll (just to make it more obvious)
+            setTimeout(() => {
+                const rng = Math.random();
+                let resultText = "";
+                let resultClass = "";
+                let rarityText = "";
+
+                if (rng < 0.05) {
+                    resultText = "Common";
+                    resultClass = "common";
+                    rarityText = "1 in 2";
+                } else if (rng < 0.1) {
+                    resultText = "Uncommon";
+                    resultClass = "uncommon";
+                    rarityText = "1 in 3";
+                } else if (rng < 0.15) {
+                    resultText = "Rare";
+                    resultClass = "rare";
+                    rarityText = "1 in 5";
+                } else if (rng < 0.2) {
+                    resultText = "Epic";
+                    resultClass = "epic";
+                    rarityText = "1 in 10";
+                } else if (rng < 0.3) {
+                    resultText = "Legendary";
+                    resultClass = "legendary";
+                    rarityText = "1 in 15";
+                } else if (rng < 0.4) {
+                    resultText = "Mythic";
+                    resultClass = "mythic";
+                    rarityText = "1 in 25";
+                } else if (rng < 0.5) {
+                    resultText = "Super Epic";
+                    resultClass = "superEpic";
+                    rarityText = "1 in 50";
+                } else if (rng < 0.6) {
+                    resultText = "Ultra Mythic";
+                    resultClass = "ultraMythic";
+                    rarityText = "1 in 100";
+                } else if (rng < 0.7) {
+                    resultText = "Cosmic";
+                    resultClass = "cosmic";
+                    rarityText = "1 in 250";
+                } else if (rng < 0.8) {
+                    resultText = "Divine";
+                    resultClass = "divine";
+                    rarityText = "1 in 500";
+                } else if (rng < 0.9) {
+                    resultText = "Eternal";
+                    resultClass = "eternal";
+                    rarityText = "1 in 1000";
+                } else {
+                    // New rarities from 0.9 onwards
+                    const rarities = [
+                        "Transcendent", "Celestial", "Apocalyptic", "Omniscient", "Infinity",
+                        "Universal", "Godlike", "Celestial Omega", "Ultimate", "Galactic", 
+                        "Fate", "Chronos", "Spectral", "Arcane", "Immortal", "Infinite Chaos", 
+                        "Shadowborn", "Otherworldly", "Overworldly", "Transcendence", 
+                        "Echo", "Seraphic", "Prime", "Universal Omega", "Endgame", 
+                        "Reality Bender", "Immensity", "Nebulous", "Cosmic Eclipse", "Solstice", 
+                        "Fury", "Ascendant"
+                    ];
+                    const index = Math.floor(Math.random() * rarities.length);
+                    resultText = rarities[index];
+                    resultClass = rarities[index].toLowerCase().replace(/\s+/g, '');
+                    rarityText = `1 in 10000+`;
+                }
+
+                resultDiv.textContent = resultText; // Set the result text
+                resultDiv.className = resultClass; // Apply appropriate class for styling
+
+                // Update highest roll if applicable
+                if (rarityText > highestRollChance) {
+                    highestRoll = resultText;
+                    highestRollChance = rarityText;
+                    document.cookie = `highestRoll=${highestRoll}; path=/; max-age=31536000`; // Store highest roll in cookies for 1 year
+                    document.cookie = `highestRollChance=${highestRollChance}; path=/; max-age=31536000`;
+                    document.getElementById("highest").textContent = `Highest Roll: ${highestRoll} (${highestRollChance})`;
+                }
+
+                // Hide the spinner
+                spinner.style.display = "none";
+            }, 1000);
+        }
+
+        // Toggle auto roll
+        function toggleAutoRoll() {
+            if (autoRollInterval) {
+                clearInterval(autoRollInterval);
+                autoRollInterval = null;
+            } else {
+                autoRollInterval = setInterval(rollRNG, 2000);
+            }
+        }
+
+        // Retrieve cookie by name
+        function getCookie(name) {
+            let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? match[2] : '';
+        }
+    </script>
+</body>
+</html>
